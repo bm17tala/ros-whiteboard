@@ -1,3 +1,3 @@
-from lib import yahboom_keyboardArm as armctrl
+import yahboom_keyboardArm as armctrl
 
 armctrl.start_listener()
