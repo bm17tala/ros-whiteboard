@@ -1,0 +1,11 @@
+<launch>
+    <arg name="robot_type" value="$(env ROBOT_TYPE)" doc="robot_type [X1,X3,X3plus,R2,X7]"/>
+    <param name="use_sim_time" value="false"/>
+    <node name="joy_node" pkg="joy" type="joy_node" output="screen" respawn="false"/>
+    <node name="yahboom_joy" pkg="yahboomcar_ctrl" type="yahboom_joy.py" output="screen">
+        <param name="linear_speed_limit" type="double" value="1.0" if="$(eval arg('robot_type') == 'X3')"/>
+        <param name="angular_speed_limit" type="double" value="5.0" if="$(eval arg('robot_type') == 'X3')"/>
+        <param name="linear_speed_limit" type="double" value="0.7" if="$(eval arg('robot_type') == 'X3plus')"/>
+        <param name="angular_speed_limit" type="double" value="3.2" if="$(eval arg('robot_type') == 'X3plus')"/>
+    </node>
+</launch>
