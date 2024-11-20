@@ -48,6 +48,8 @@ Moving around:
    j    k    l
    m    ,    .
 
+this is to test that the correct file is working
+   
 q/z : increase/decrease max speeds by 10%
 w/x : increase/decrease only linear speed by 10%
 e/c : increase/decrease only angular speed by 10%
