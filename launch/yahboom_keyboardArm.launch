@@ -1,5 +1,5 @@
 <launch>
-    <node name="yahboom_keyboardArm" pkg="ros-whiteboard" type="yahboom_keyboardArm.py" output="screen">
+    <node name="ros-whiteboard" pkg="ros-whiteboard" type="yahboom_keyboardArm.py" output="screen">
         <param name="linear_speed_limit" type="double" value="1.0"/>
         <param name="angular_speed_limit" type="double" value="5.0"/>
     </node>
