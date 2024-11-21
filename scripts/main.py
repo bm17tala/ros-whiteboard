@@ -217,8 +217,10 @@ def arm_ctrl(id, direction, pub_Arm):
         armjoint.angle = arm_joints[idIndex]
         # print "id: {},direction: {}".format(id, direction)
         pub_Arm.publish(armjoint)
+        print("---------------")
         for i in range(len(arm_joints)):
-            print("Joint ", i, " : ", arm_joints[i], " ")
+            print("Joint ", i + 1, " : ", arm_joints[i], " ")
+        print("---------------")
         sleep(0.05)
     	
 def Armcallback(msg):
