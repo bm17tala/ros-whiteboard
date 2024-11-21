@@ -296,6 +296,7 @@ if __name__ == "__main__":
                 if (not (twist.linear.x == 0)):
                     print("twist: ", twist)
                 pub.publish(twist)
+            sleep(0.05)
     except Exception as e: print(e)
     finally: pub.publish(Twist())
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
