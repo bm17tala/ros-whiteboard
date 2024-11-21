@@ -238,7 +238,7 @@ if __name__ == "__main__":
     srv_arm = rospy.ServiceProxy("CurrentAngle", RobotArmArray)
     #-------
     xspeed_switch = True
-    (speed, turn) = (0.05, 1.0)
+    (speed, turn) = (0.05, 0.05)
     (x, th) = (0, 0)
     status = 0
     stop = False
