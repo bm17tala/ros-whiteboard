@@ -78,20 +78,20 @@ moveBindings = {
     'M': (-1, -1),
 }
 
-# speedBindings = {
-#     'Q': (1.01, 1.01),
-#     'Z': (.99, .99),
-#     'W': (1.1, 1),
-#     'X': (.9, 1),
-#     'E': (1, 1.1),
-#     'C': (1, .9),
-#     'q': (1.1, 1.1),
-#     'z': (.9, .9),
-#     'w': (1.1, 1),
-#     'x': (.9, 1),
-#     'e': (1, 1.1),
-#     'c': (1, .9),
-# }
+speedBindings = {
+    'Q': (1.01, 1.01),
+    'Z': (.99, .99),
+    'W': (1.1, 1),
+    'X': (.9, 1),
+    'E': (1, 1.1),
+    'C': (1, .9),
+    'q': (1.1, 1.1),
+    'z': (.9, .9),
+    'w': (1.1, 1),
+    'x': (.9, 1),
+    'e': (1, 1.1),
+    'c': (1, .9),
+}
 
 armBindings = {
     '1': (1, -1), #left
@@ -238,7 +238,7 @@ if __name__ == "__main__":
     srv_arm = rospy.ServiceProxy("CurrentAngle", RobotArmArray)
     #-------
     xspeed_switch = True
-    (speed, turn) = (0.05, 1.0)
+    (speed, turn) = (0.2, 1.0)
     (x, th) = (0, 0)
     status = 0
     stop = False
@@ -263,8 +263,8 @@ if __name__ == "__main__":
                 count = 0
             # 按键字符串判断是否在速度字典中
             elif key in speedBindings.keys():
-                #speed = speed * speedBindings[key][0]
-                #turn = turn * speedBindings[key][1]
+                speed = speed * speedBindings[key][0]
+                turn = turn * speedBindings[key][1]
                 count = 0
                 # 速度限制
                 if speed > linear_limit: speed = linear_limit
