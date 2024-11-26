@@ -38,6 +38,7 @@ from yahboomcar_msgs.msg import *
 from yahboomcar_msgs.srv import *
 from std_msgs.msg import Int32, Bool
 from actionlib_msgs.msg import GoalID
+from autopilot_common import *
 from pynput import keyboard
 
 msg = """
@@ -206,10 +207,13 @@ def getKey():
 def vels(speed, turn):
     return "currently:\tspeed %s\tturn %s " % (speed, turn)
 
+
+ros_ctrl = ROSCtrl()
 def arm_ctrl(id, direction, pub_Arm):
     global arm_joints
     global armjoint
     global keyReleased
+    global ros_ctrl
     print("id, direction: ", id, direction)
     print("key released: ", keyReleased)
     idIndex = id - 1
@@ -233,17 +237,38 @@ def arm_ctrl(id, direction, pub_Arm):
     #         print("Joint ", i + 1, " : ", arm_joints[i], " ")
     #     print("---------------")
     #     sleep(0.05)
-    for i in range(6):
-        armjoint.id = i + 1
-        if id == 1:
-            armjoint.angle = pos_grab_marker[i]
-        elif id == 2:
-            armjoint.angle = pos_draw_hover[i]
-        elif id == 3:
-            armjoint.angle = pos_draw_pen_down[i]
+
+
+    # for i in range(6):
+    #     armjoint.id = i + 1
+
+    #     if id == 1:
+    #         armjoint.angle = pos_grab_marker[i]
+    #     elif id == 2:
+    #         armjoint.angle = pos_draw_hover[i]
+    #     elif id == 3:
+    #         armjoint.angle = pos_draw_pen_down[i]
         
+    #     sleep(0.25)
+    #     pub_Arm.publish(armjoint)
+
+
+    for i in range(6):
+        joint_num = i + 1
+
+        if id == 1:
+            self.ros_ctrl.pubArm([], id=joint_num, angle=pos_grab_marker[i], run_time=1000)
+        elif id == 2:
+            self.ros_ctrl.pubArm([], id=joint_num, angle=pos_draw_hover[i], run_time=1000)
+        elif id == 3:
+            self.ros_ctrl.pubArm([], id=joint_num, angle=pos_draw_pen_down[i], run_time=1000)
+
         sleep(0.25)
-        pub_Arm.publish(armjoint)
+    
+
+
+
+
 
 
 
