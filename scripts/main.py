@@ -242,6 +242,7 @@ def arm_ctrl(id, direction, pub_Arm):
         elif id == 3:
             armjoint.angle = pos_draw_pen_down[i]
         
+        sleep(0.25)
         pub_Arm.publish(armjoint)
 
 
