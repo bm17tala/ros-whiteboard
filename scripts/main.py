@@ -257,11 +257,11 @@ def arm_ctrl(id, direction, pub_Arm):
         joint_num = i + 1
 
         if id == 1:
-            self.ros_ctrl.pubArm([], id=joint_num, angle=pos_grab_marker[i], run_time=1000)
+            ros_ctrl.pubArm([], id=joint_num, angle=pos_grab_marker[i], run_time=1000)
         elif id == 2:
-            self.ros_ctrl.pubArm([], id=joint_num, angle=pos_draw_hover[i], run_time=1000)
+            ros_ctrl.pubArm([], id=joint_num, angle=pos_draw_hover[i], run_time=1000)
         elif id == 3:
-            self.ros_ctrl.pubArm([], id=joint_num, angle=pos_draw_pen_down[i], run_time=1000)
+            ros_ctrl.pubArm([], id=joint_num, angle=pos_draw_pen_down[i], run_time=1000)
 
         sleep(0.25)
     
