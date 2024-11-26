@@ -269,9 +269,9 @@ def arm_ctrl(id, direction, pub_Arm):
 
     else:
         if id == 4: # close the pinchers
-            ros_ctrl.pubArm([], id=6, angle=pos_draw_hover[5], run_time=5000)
+            ros_ctrl.pubArm([], id=6, angle=156, run_time=5000)
         elif id == 5: # open the pinchers
-            ros_ctrl.pubArm([], id=6, angle=pos_draw_pen_down[5], run_time=5000)
+            ros_ctrl.pubArm([], id=6, angle=90, run_time=5000)
 
 
     sleep(0.05)
