@@ -112,7 +112,9 @@ speedBindings = {
 armBindings = {
     '1' : (1, 1), # position to grab marker
     '2' : (2, 2), # position to draw (hover)
-    '3' : (3, 3)  # position to draw (pen down)
+    '3' : (3, 3), # position to draw (pen down)
+    '-' : (4, 4), # close the pinchers
+    '+' : (5, 5)  # open the pinchers
 }
 
 pos_grab_marker = [90, 0, 90, 90, 90, 90]
@@ -252,25 +254,24 @@ def arm_ctrl(id, direction, pub_Arm):
     #     sleep(0.25)
     #     pub_Arm.publish(armjoint)
 
+    if id == 1 or id == 2 or id == 3: 
+        for i in range(5):
+            joint_num = i + 1
 
-    for i in range(6):
-        joint_num = i + 1
+            if id == 1: # position to grab marker
+                ros_ctrl.pubArm([], id=joint_num, angle=pos_grab_marker[i], run_time=1000)
+            elif id == 2: # position to hover over board (pen up)
+                ros_ctrl.pubArm([], id=joint_num, angle=pos_draw_hover[i], run_time=1000)
+            elif id == 3: # position to draw on board (pen down)
+                ros_ctrl.pubArm([], id=joint_num, angle=pos_draw_pen_down[i], run_time=1000)
+            
+            sleep(0.25)
 
-        if id == 1:
-            ros_ctrl.pubArm([], id=joint_num, angle=pos_grab_marker[i], run_time=1000)
-        elif id == 2:
-            ros_ctrl.pubArm([], id=joint_num, angle=pos_draw_hover[i], run_time=1000)
-        elif id == 3:
-            ros_ctrl.pubArm([], id=joint_num, angle=pos_draw_pen_down[i], run_time=1000)
-
-        sleep(0.25)
-    
-
-
-
-
-
-
+    else:
+        if id == 4: # close the pinchers
+            ros_ctrl.pubArm([], id=6, angle=pos_draw_hover[5], run_time=5000)
+        elif id == 5: # open the pinchers
+            ros_ctrl.pubArm([], id=6, angle=pos_draw_pen_down[5], run_time=5000)
 
 
     sleep(0.05)
