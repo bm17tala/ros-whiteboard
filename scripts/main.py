@@ -234,7 +234,7 @@ def arm_ctrl(id, direction, pub_Arm):
     #     print("---------------")
     #     sleep(0.05)
     for i in range(6):
-        armjoint.id = i
+        armjoint.id = i + 1
         if id == 1:
             armjoint.angle = pos_grab_marker[i]
         elif id == 2:
