@@ -114,7 +114,7 @@ armBindings = {
     '2' : (2, 2), # position to draw (hover)
     '3' : (3, 3), # position to draw (pen down)
     '-' : (4, 4), # close the pinchers
-    '+' : (5, 5)  # open the pinchers
+    '=' : (5, 5)  # open the pinchers
 }
 
 pos_grab_marker = [90, 0, 90, 90, 90, 90]
