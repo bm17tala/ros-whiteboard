@@ -38,7 +38,7 @@ plot1.invert_yaxis()
 #plt.show()
 
 
-
+""""
 point = []
 point.append(None)
 point.append(None)
@@ -55,3 +55,4 @@ for i in range(0, len(xCoords)-1):
         line = []
     
 print(lines)
+"""
