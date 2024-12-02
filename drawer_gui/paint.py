@@ -4,6 +4,10 @@ from PIL import Image
 import os
 
 class main:
+    global xCoords
+    global yCoords
+    xCoords = []
+    yCoords = []
     def __init__(self, master):
         self.master = master
         self.color_fg = 'Black'
@@ -20,6 +24,12 @@ class main:
             self.c.create_line(self.old_x, self.old_y, e.x, e.y, width = self.pen_width, fill = self.color_fg, capstyle='round', smooth = True)
         self.old_x = e.x
         self.old_y = e.y
+        xCoords.append(self.c.winfo_pointerx()-285)
+        yCoords.append(self.c.winfo_pointery()-100)
+        global width
+        global height
+        width = self.c.winfo_width()
+        height = self.c.winfo_height()
 
     def reset(self, e):
         self.old_x = None

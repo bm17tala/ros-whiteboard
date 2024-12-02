@@ -3,50 +3,55 @@ import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
 from scipy.stats import linregress
+import paint
 
-image = Image.open("image.png")
-width, height = image.size
-top_left = image.crop((0, 0,width/2,height/2))
-top_left.save('top_left.png', 'png')
+xCoords = paint.xCoords
+yCoords = paint.yCoords
+for i in range(0, len(xCoords)//5 + 1):
+    if i % 15 == 0:
+        xCoords.pop(i)
+        yCoords.pop(i)
+        i -= 1
 
-top_right = image.crop((width/2, 0,width,height/2))
-top_right.save('top_right.png', 'png')
+print(str(paint.width) + "x" + str(paint.height))
+scaleX = 200 / (paint.width-4)
+scaleY = 100 / (paint.height-4)
 
-bot_left = image.crop((0, height/2,width/2,height))
-bot_left.save('bot_left.png', 'png')
+for i in range(0, len(xCoords)):
+    print(xCoords[i], yCoords[i])
+    xCoords[i] = 1 * int(xCoords[i] * scaleX)
+    yCoords[i] = 1 * int(yCoords[i] * scaleY)
+    print(xCoords[i], yCoords[i])
+    print("---------")
 
-bot_right = image.crop((width/2, height/2,width,height))
-bot_right.save('bot_right.png', 'png')
+xPoints = np.array(xCoords)
+yPoints = np.array(yCoords)
 
-top_left1 = cv2.imread('top_left.png')
-top_right1 = cv2.imread('top_right.png')
-bot_left1 = cv2.imread('bot_left.png')
-bot_right1 = cv2.imread('bot_right.png')
-
-black = [0,0,0]
-coords = np.where(np.all(top_left1==black,axis=2))
-coords1y = coords[0]
-coords1x = coords[1]
-coords = np.where(np.all(top_right1==black,axis=2))
-coords2y = coords[0]
-coords2x = coords[1]
-coords = np.where(np.all(bot_left1==black,axis=2))
-coords3y = coords[0]
-coords3x = coords[1]
-coords = np.where(np.all(bot_right1==black,axis=2))
-coords4y = coords[0]
-coords4x = coords[1]
-
-
-reg = linregress(coords1x,coords1y)
-equation = reg.slope*coords1x + reg.intercept
 graph, plot1 = plt.subplots(1)
 
-plt.plot(coords1x, equation,)
-plt.xlim(0, top_left.width)
-plt.ylim(0, top_left.height)
-plt.scatter()
-#plt.scatter(coords1x, coords1y)
+plt.plot(xPoints, yPoints)
+plt.xlim(0, 200)
+plt.ylim(0, 100)
 plot1.invert_yaxis()
 
-plt.show()
+
+#plt.show()
+
+
+
+point = []
+point.append(None)
+point.append(None)
+line = []
+lines = []
+
+for i in range(0, len(xCoords)-1):
+    if abs(xCoords[i] - xCoords[i+1]) > 10 or abs(yCoords[i] - yCoords[i+1]) > 10:
+        point[0] = xCoords[i]
+        point[1] = yCoords[i]
+        line.append(point)
+    else:
+        lines.append(line)
+        line = []
+    
+print(lines)
