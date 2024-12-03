@@ -211,7 +211,7 @@ def vels(speed, turn):
 
 
 ros_ctrl = ROSCtrl()
-def arm_ctrl(id, direction, pub_Arm):
+def arm_ctrl(id, direction):
     global arm_joints
     global armjoint
     global keyReleased
@@ -285,6 +285,8 @@ def Armcallback(msg):
     if len(msg.joints) != 0: arm_joints = list(msg.joints)
     else: arm_joints[msg.id - 1] = msg.angle
 
+pub_Arm = rospy.Publisher("TargetAngle", ArmJoint, queue_size=1000)
+
 if __name__ == "__main__":
     settings = termios.tcgetattr(sys.stdin)
     rospy.init_node('keyboard_ctrl')
@@ -294,7 +296,6 @@ if __name__ == "__main__":
     pub = rospy.Publisher('cmd_vel', Twist, queue_size=1)
     #--new--
     sub_Arm = rospy.Subscriber("ArmAngleUpdate", ArmJoint, Armcallback, queue_size=1000)
-    pub_Arm = rospy.Publisher("TargetAngle", ArmJoint, queue_size=1000)
     srv_arm = rospy.ServiceProxy("CurrentAngle", RobotArmArray)
     #-------
     xspeed_switch = True

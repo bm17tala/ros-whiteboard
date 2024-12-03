@@ -132,7 +132,7 @@ class PaintGUI:
         for i in range(len(processed_lines)):
             for j in range(len(processed_lines[i])):
                 if j == 0:
-                    main.arm_ctrl(3, 0, main.pub_Arm)
+                    main.arm_ctrl(3, 0)
 
 
 
