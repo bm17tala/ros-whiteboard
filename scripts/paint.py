@@ -154,7 +154,7 @@ class PaintGUI:
 
                 main.pub.publish(move_cmd)
 
-                rospy.sleep(1)
+                rospy.sleep(0.5)
 
                 move_cmd.linear.x = 0
                 move_cmd.linear.y = 0
