@@ -76,10 +76,10 @@ class PaintGUI:
 
 
     def close_arm(self):
-        pass
+        main.arm_ctrl(4, 0)
 
     def open_arm(self):
-        pass
+        main.arm_ctrl(5, 0)
 
     def send_to_ROS(self):
 
