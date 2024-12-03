@@ -1,11 +1,3 @@
-"""
-
-Author: Max Vanderbeek, Brenden Talasco
-
-NOTES: Whiteboard is a 4:3 ratio -> 12 inches wide, 9 inches tall
-
-"""
-
 from tkinter import *
 from tkinter import colorchooser, ttk
 from PIL import Image, ImageDraw
