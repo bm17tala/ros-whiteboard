@@ -145,7 +145,7 @@ class PaintGUI:
             main.pub.publish(move_cmd)
             main.arm_ctrl(2, 0)
             for j in range(len(processed_lines[i])):
-                if j == 0:
+                if j == 0 or j == len(processed_lines[i] - 1):
                     main.arm_ctrl(3, 0)
                     dx = 0
                     dy = 0
