@@ -140,8 +140,8 @@ class PaintGUI:
                     dx = 0
                     dy = 0
                 else:
-                    dx = processed_lines[i][0] - processed_lines[i-1][0]
-                    dy = processed_lines[i][1] - processed_lines[i-1][1]
+                    dx = processed_lines[i][j][0] - processed_lines[i][j-1][0]
+                    dy = processed_lines[i][j][1] - processed_lines[i][j-1][1]
 
 
                 angle_rad = math.atan2(dy, dx)
