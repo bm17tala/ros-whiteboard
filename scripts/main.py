@@ -287,7 +287,7 @@ def Armcallback(msg):
 
 pub_Arm = rospy.Publisher("TargetAngle", ArmJoint, queue_size=1000)
 
-if __name__ == "__main__":
+if True:
     settings = termios.tcgetattr(sys.stdin)
     rospy.init_node('keyboard_ctrl')
     #rospy.init_node('yahboom_keyboardArm')
