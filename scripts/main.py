@@ -286,6 +286,8 @@ def Armcallback(msg):
     else: arm_joints[msg.id - 1] = msg.angle
 
 pub_Arm = rospy.Publisher("TargetAngle", ArmJoint, queue_size=1000)
+pub = rospy.Publisher('cmd_vel', Twist, queue_size=1)
+
 
 if True:
     settings = termios.tcgetattr(sys.stdin)
@@ -293,7 +295,6 @@ if True:
     #rospy.init_node('yahboom_keyboardArm')
     linear_limit = rospy.get_param('~linear_speed_limit', 1.0)
     angular_limit = rospy.get_param('~angular_speed_limit', 5.0)
-    pub = rospy.Publisher('cmd_vel', Twist, queue_size=1)
     #--new--
     sub_Arm = rospy.Subscriber("ArmAngleUpdate", ArmJoint, Armcallback, queue_size=1000)
     srv_arm = rospy.ServiceProxy("CurrentAngle", RobotArmArray)
