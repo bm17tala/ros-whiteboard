@@ -134,10 +134,17 @@ class PaintGUI:
 
                 move_cmd = main.Twist()
 
-                angle_rad = math.radians(25)
+                if j == 0:
+                    main.arm_ctrl(3, 0)
 
-                move_cmd.linear.x = 0.5 * math.cos(angle_rad)  # Forward motion along the angle
-                move_cmd.linear.y = 0.5 * math.sin(angle_rad)  # Forward motion along the angle
+                dx = processed_lines[i][0] - processed_lines[i-1][0]
+                dy = processed_lines[i][1] - processed_lines[i-1][1]
+
+
+                angle_rad = math.atan2(dy, dx)
+
+                move_cmd.linear.x = 0.005 * math.cos(angle_rad)  # Forward motion along the angle
+                move_cmd.linear.y = 0.005 * math.sin(angle_rad)  # Forward motion along the angle
                 move_cmd.angular.z = 0 
 
                 main.pub.publish(move_cmd)
@@ -149,8 +156,7 @@ class PaintGUI:
                 move_cmd.angular.z = 0
                 main.pub.publish(move_cmd)
 
-                if j == 0:
-                    main.arm_ctrl(3, 0)
+                
 
                 
 
