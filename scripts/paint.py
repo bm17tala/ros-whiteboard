@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from tkinter import *
 from tkinter import colorchooser, ttk
 from PIL import Image, ImageDraw
