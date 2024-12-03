@@ -12,7 +12,7 @@ lines.append( [] )
 canvas_width = 400
 canvas_height = 300
 
-class main:
+class PaintGUI:
     
     current_line = 0
     def __init__(self, master):
@@ -172,7 +172,7 @@ class main:
 
 win = Tk()
 win.title("Bot Ross Drawing Utility")
-main(win)
+PaintGUI(win)
 win.mainloop()
 if os.path.exists('image.eps'):
     os.remove("image.eps")
