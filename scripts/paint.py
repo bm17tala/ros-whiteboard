@@ -148,16 +148,18 @@ class PaintGUI:
 
                 move_cmd.linear.x = 0.05 * math.cos(angle_rad)  # Forward motion along the angle
                 move_cmd.linear.y = 0.05 * math.sin(angle_rad)  # Forward motion along the angle
-                move_cmd.angular.z = 0 
+                move_cmd.angular.z = 0
 
-                main.pub.publish(move_cmd)
+                print("x: ", move_cmd.linear.x, " y: ", move_cmd.linear.y, " dx: ", dx, " dy: ", dy, " angle_rad: ", angle_rad) 
+
+                #main.pub.publish(move_cmd)
 
                 rospy.sleep(4000)
 
                 move_cmd.linear.x = 0
                 move_cmd.linear.y = 0
                 move_cmd.angular.z = 0
-                main.pub.publish(move_cmd)
+                #main.pub.publish(move_cmd)
 
                 
 
