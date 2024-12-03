@@ -11,7 +11,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 import matplotlib.pyplot as plt
 #from scipy.stats import linregress
-import paint
+import scripts.paint as paint
 
 canvas_width = 500
 canvas_height = 400
