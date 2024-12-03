@@ -132,7 +132,7 @@ class PaintGUI:
         for i in range(len(processed_lines)):
             for j in range(len(processed_lines[i])):
 
-                move_cmd = Twist()
+                move_cmd = main.Twist()
 
                 angle_rad = math.radians(45)
 
