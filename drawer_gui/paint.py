@@ -79,7 +79,15 @@ class main:
         #new_img = img.resize((200,100))
         #new_img.save('image.png', 'png')
 
+
+    def close_arm(self):
+        pass
+
+    def open_arm(self):
+        pass
+
     def send_to_ROS(self):
+
 
         canvas_xOrigin = int(canvas_width / 2)
         canvas_yOrigin = int(canvas_width / 2)
@@ -142,6 +150,10 @@ class main:
         brush.grid(row=1,column=0)
         send_to_robot = Button(self.controls, text ="Send to Robot", command=self.send_to_ROS)
         send_to_robot.grid(row=3,column=0)
+        close_arm = Button(self.controls, text ="Close arm", command=self.close_arm)
+        close_arm.grid(row=4,column=0)
+        open_arm = Button(self.controls, text ="Open arm", command=self.open_arm)
+        open_arm.grid(row=4,column=1)
         self.controls.pack(side="left")
         self.c = Canvas(self.master, width=canvas_width, height=canvas_height, bg=self.color_bg)
         self.c.pack(fill=BOTH, expand=True)
@@ -157,7 +169,7 @@ class main:
         
 
 win = Tk()
-win.title("Paint App")
+win.title("Bot Ross Drawing Utility")
 main(win)
 win.mainloop()
 if os.path.exists('image.eps'):
