@@ -82,6 +82,10 @@ class PaintGUI:
     def open_arm(self):
         main.arm_ctrl(5, 0)
 
+    def prepare_arm(self):
+        main.arm_ctrl(1, 0)
+
+
     def send_to_ROS(self):
 
 
@@ -131,6 +135,7 @@ class PaintGUI:
         directed_graph_img.save("directed_graph_img.png")
 
         for i in range(len(processed_lines)):
+            main.arm_ctrl(2, 0)
             for j in range(len(processed_lines[i])):
 
                 move_cmd = main.Twist()
@@ -189,6 +194,8 @@ class PaintGUI:
         close_arm.grid(row=4,column=0)
         open_arm = Button(self.controls, text ="Open arm", command=self.open_arm)
         open_arm.grid(row=4,column=1)
+        prepare = Button(self.controls, text ="Prepare", command=self.prepare_arm)
+        prepare.grid(row=5,column=0)
         self.controls.pack(side="left")
         self.c = Canvas(self.master, width=canvas_width, height=canvas_height, bg=self.color_bg)
         self.c.pack(fill=BOTH, expand=True)
