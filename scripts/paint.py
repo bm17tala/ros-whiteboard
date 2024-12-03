@@ -135,6 +135,10 @@ class PaintGUI:
         directed_graph_img.save("directed_graph_img.png")
 
         for i in range(len(processed_lines)):
+            move_cmd.linear.x = 0
+            move_cmd.linear.y = 0
+            move_cmd.angular.z = 0
+            main.pub.publish(move_cmd)
             main.arm_ctrl(2, 0)
             for j in range(len(processed_lines[i])):
 
