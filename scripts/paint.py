@@ -6,6 +6,7 @@ from PIL import Image, ImageDraw
 import os
 import math
 import main
+import rospy
 
 lines = []
 lines.append( [] )
@@ -151,7 +152,7 @@ class PaintGUI:
 
                 main.pub.publish(move_cmd)
 
-                rospy.sleep(10000)
+                #rospy.sleep(10000)
 
                 move_cmd.linear.x = 0
                 move_cmd.linear.y = 0
