@@ -11,6 +11,7 @@ from tkinter import colorchooser, ttk
 from PIL import Image, ImageDraw
 import os
 import math
+import main
 
 lines = []
 lines.append( [] )
@@ -134,6 +135,13 @@ class main:
 
         directed_graph_img.save("directed_graph_img.png")
 
+        for i in range(len(processed_lines)):
+            for j in range(len(processed_lines[i])):
+                if j == 0:
+                    main.arm_ctrl(3, 0, main.pub_Arm)
+
+
+
 
     def drawWidgets(self):
         self.controls = Frame(self.master, padx=5, pady=5)
@@ -144,8 +152,8 @@ class main:
         self.slider.grid(row=0, column=1)
         self.label = Label(self.controls, text='Brush Active', font='Courier 12')
         self.label.grid(row=2, column=1)
-        eraser = Button(self.controls, text ="Eraser", command=self.eraser)
-        eraser.grid(row=1,column=1)
+        # eraser = Button(self.controls, text ="Eraser", command=self.eraser)
+        # eraser.grid(row=1,column=1)
         brush = Button(self.controls, text ="Brush", command=self.brush)
         brush.grid(row=1,column=0)
         send_to_robot = Button(self.controls, text ="Send to Robot", command=self.send_to_ROS)
