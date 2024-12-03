@@ -152,14 +152,14 @@ class PaintGUI:
 
                 print("x: ", move_cmd.linear.x, " y: ", move_cmd.linear.y, " dx: ", dx, " dy: ", dy, " angle_rad: ", angle_rad) 
 
-                #main.pub.publish(move_cmd)
+                main.pub.publish(move_cmd)
 
-                #rospy.sleep(4000)
+                rospy.sleep(1)
 
                 move_cmd.linear.x = 0
                 move_cmd.linear.y = 0
                 move_cmd.angular.z = 0
-                #main.pub.publish(move_cmd)
+                main.pub.publish(move_cmd)
 
                 
 
