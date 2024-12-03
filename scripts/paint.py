@@ -134,7 +134,7 @@ class PaintGUI:
 
                 move_cmd = main.Twist()
 
-                angle_rad = math.radians(45)
+                angle_rad = math.radians(25)
 
                 move_cmd.linear.x = 0.5 * math.cos(angle_rad)  # Forward motion along the angle
                 move_cmd.linear.y = 0.5 * math.sin(angle_rad)  # Forward motion along the angle
