@@ -139,7 +139,7 @@ class PaintGUI:
 
         move_cmd = main.Twist()
         main.arm_ctrl(2, 0)
-        lineRate = rospy.rate(distance)
+        #lineRate = rospy.rate(distance)
         for i in range(0, len(processed_lines)):
             startingPoint = 1
 
@@ -160,6 +160,8 @@ class PaintGUI:
 
             #calculate distance of line
             distance = math.sqrt( (dx ** 2) + (dy ** 2) )
+            lineRate = rospy.rate(distance)
+
 
 
             angle_rad = math.atan2(dy, dx)
@@ -205,6 +207,8 @@ class PaintGUI:
 
                 #calculate distance of line
                 distance = math.sqrt( (dx ** 2) + (dy ** 2) )
+                lineRate = rospy.rate(distance)
+
 
 
                 angle_rad = math.atan2(dy, dx)
