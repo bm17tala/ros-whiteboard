@@ -160,7 +160,7 @@ class PaintGUI:
 
             #calculate distance of line
             distance = math.sqrt( (dx ** 2) + (dy ** 2) )
-            lineRate = rospy.rate(distance)
+            lineRate = rospy.Rate(distance)
 
 
 
@@ -207,7 +207,7 @@ class PaintGUI:
 
                 #calculate distance of line
                 distance = math.sqrt( (dx ** 2) + (dy ** 2) )
-                lineRate = rospy.rate(distance)
+                lineRate = rospy.Rate(distance)
 
 
 
