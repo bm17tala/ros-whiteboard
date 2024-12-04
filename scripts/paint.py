@@ -142,7 +142,8 @@ class PaintGUI:
             startingPoint = 0
 
             if i > 0:
-                #main.arm_ctrl(2, 0)
+                main.arm_ctrl(2, 0)
+                sleep(3)
                 print(processed_lines[i][0][0])
                 print(processed_lines[i-1][len(processed_lines[i-1])-1][0])
 
@@ -165,7 +166,8 @@ class PaintGUI:
 
                 sleep(distance / 100)
 
-                #main.arm_ctrl(3,0)
+                main.arm_ctrl(3,0)
+                sleep(3)
                 startingPoint = 1
 
 
@@ -205,6 +207,7 @@ class PaintGUI:
             move_cmd.linear.y = 0
             move_cmd.angular.z = 0
             main.pub.publish(move_cmd)
+            sleep(3)
 
             #main.pub.publish(move_cmd)
             # Publish the zero velocity command
