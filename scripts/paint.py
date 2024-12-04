@@ -137,6 +137,7 @@ class PaintGUI:
 
         directed_graph_img.save("directed_graph_img.png")
 
+        distVar = 55
         move_cmd = main.Twist()
         main.arm_ctrl(2, 0)
         for i in range(0, len(processed_lines)):
@@ -215,7 +216,8 @@ class PaintGUI:
 
                 main.pub.publish(move_cmd)
 
-                rospy.sleep(distance / 55)
+                if distVar > 0: distVar -= 1
+                rospy.sleep(distance / distVar)
 
                 # move_cmd.linear.x = 0
                 # move_cmd.linear.y = 0
