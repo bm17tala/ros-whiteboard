@@ -141,8 +141,11 @@ class PaintGUI:
             main.arm_ctrl(2, 0)
             for j in range(len(processed_lines[i])):
 
-                #calculate angle to move in
-                if j == 0 or j == len(processed_lines[i]) - 1:
+                if j == 0 and i > 0:
+                    dx = processed_lines[i][j][0] - processed_lines[i-1][len(processed_lines[i-1])-1][0]
+                    dy = processed_lines[i][j][1] - processed_lines[i-1][len(processed_lines[i-1])-1][1]
+                elif j == 0 or j == len(processed_lines[i]) - 1:
+                    #calculate angle to move in
                     main.arm_ctrl(3, 0)
                     dx = 0
                     dy = 0
@@ -161,6 +164,9 @@ class PaintGUI:
                 move_cmd.angular.z = 0
 
                 print("x: ", move_cmd.linear.x, " y: ", move_cmd.linear.y, " dx: ", dx, " dy: ", dy, " angle_rad: ", angle_rad, " distance: ", distance) 
+
+                if j == 0 and i > 0:
+                    main.arm_ctrl(3, 0)
 
                 main.pub.publish(move_cmd)
 
