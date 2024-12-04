@@ -139,7 +139,7 @@ class PaintGUI:
 
         move_cmd = main.Twist()
         main.arm_ctrl(2, 0)
-        for i in range(len(processed_lines)):
+        for i in range(0, len(processed_lines)):
             startingPoint = 1
 
             #print(processed_lines[i][0][0])
@@ -148,7 +148,9 @@ class PaintGUI:
             #else:
             #    print(processed_lines[i-1][len(processed_lines[i-1])-1][0])
 
-            if i < 0:
+
+
+            if i < 1:
                 dx = processed_lines[i][0][0] - canvas_xOrigin
                 dy = processed_lines[i][0][1] - canvas_yOrigin
             else:
