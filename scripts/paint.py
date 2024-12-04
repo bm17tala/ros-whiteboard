@@ -7,6 +7,7 @@ import os
 import math
 import main
 import rospy
+from time import sleep
 
 lines = []
 lines.append( [] )
@@ -161,7 +162,7 @@ class PaintGUI:
 
                 main.pub.publish(move_cmd)
 
-                rospy.sleep(distance / 100)
+                sleep(distance / 100)
 
                 main.arm_ctrl(3,0)
                 startingPoint = 1
@@ -197,7 +198,7 @@ class PaintGUI:
 
                 main.pub.publish(move_cmd)
 
-                rospy.sleep(distance / 100)
+                sleep(distance / 100)
 
             move_cmd.linear.x = 0
             move_cmd.linear.y = 0
