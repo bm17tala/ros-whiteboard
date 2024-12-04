@@ -102,7 +102,7 @@ class PaintGUI:
 
         for i in range(0, len(lines)):
             processed_lines.append([])
-            for j in range(0, len(lines[i]), 3):
+            for j in range(0, len(lines[i]), 6):
                 processed_lines[i].append( lines[i][j] )
 
 
@@ -217,10 +217,10 @@ class PaintGUI:
 
                 rospy.sleep(distance / 50)
 
-                move_cmd.linear.x = 0
-                move_cmd.linear.y = 0
-                move_cmd.angular.z = 0
-                main.pub.publish(move_cmd)
+                # move_cmd.linear.x = 0
+                # move_cmd.linear.y = 0
+                # move_cmd.angular.z = 0
+                # main.pub.publish(move_cmd)
 
                 # # Publish the zero velocity command
                 # rate = rospy.Rate(100)  # 100 Hz
