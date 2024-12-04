@@ -138,11 +138,6 @@ class PaintGUI:
 
         move_cmd = main.Twist()
         for i in range(len(processed_lines)):
-            
-            move_cmd.linear.x = 0
-            move_cmd.linear.y = 0
-            move_cmd.angular.z = 0
-            main.pub.publish(move_cmd)
             main.arm_ctrl(2, 0)
             for j in range(len(processed_lines[i])):
                 if j == 0 or j == len(processed_lines[i]) - 1:
@@ -164,20 +159,12 @@ class PaintGUI:
 
                 main.pub.publish(move_cmd)
 
-                rospy.sleep(1)
+                rospy.sleep(0.2)
 
                 move_cmd.linear.x = 0
                 move_cmd.linear.y = 0
                 move_cmd.angular.z = 0
                 main.pub.publish(move_cmd)
-            move_cmd.linear.x = 0
-            move_cmd.linear.y = 0
-            move_cmd.angular.z = 0
-            main.pub.publish(move_cmd)
-        move_cmd.linear.x = 0
-        move_cmd.linear.y = 0
-        move_cmd.angular.z = 0
-        main.pub.publish(move_cmd)
 
                 
 
