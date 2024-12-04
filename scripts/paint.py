@@ -173,8 +173,8 @@ class PaintGUI:
 
             main.pub.publish(move_cmd)
 
-            #rospy.sleep(distance / 100)
-            lineRate.sleep()
+            rospy.sleep(distance / 100)
+            #lineRate.sleep()
 
             move_cmd.linear.x = 0
             move_cmd.linear.y = 0
@@ -221,8 +221,8 @@ class PaintGUI:
 
                 main.pub.publish(move_cmd)
 
-                #rospy.sleep(distance / 50)
-                lineRate.sleep()
+                rospy.sleep(distance / 50)
+                #lineRate.sleep()
 
 
                 # move_cmd.linear.x = 0
