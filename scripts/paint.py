@@ -139,7 +139,6 @@ class PaintGUI:
         move_cmd = main.Twist()
         for i in range(len(processed_lines)):
             main.arm_ctrl(2, 0)
-            rospy.sleep(2)
 
             if i > 0:
                 dx = processed_lines[i][j][0] - processed_lines[i-1][len(processed_lines[i-1])-1][0]
@@ -161,7 +160,6 @@ class PaintGUI:
                 rospy.sleep(distance / 100)
 
                 main.arm_ctrl(3,0)
-                rospy.sleep(2)
 
 
             for j in range(1, len(processed_lines[i])):
@@ -169,10 +167,9 @@ class PaintGUI:
                 #if j == 0 and i > 0:
                 #    dx = processed_lines[i][j][0] - processed_lines[i-1][len(processed_lines[i-1])-1][0]
                 #    dy = processed_lines[i][j][1] - processed_lines[i-1][len(processed_lines[i-1])-1][1]
-                if j == len(processed_lines[i]) - 1:
+                if j == 0 or j == len(processed_lines[i]) - 1:
                     #calculate angle to move in
                     main.arm_ctrl(3, 0)
-                    rospy.sleep(2)
 
                     dx = 0
                     dy = 0
@@ -199,12 +196,16 @@ class PaintGUI:
             move_cmd.linear.x = 0
             move_cmd.linear.y = 0
             move_cmd.angular.z = 0
+
             #main.pub.publish(move_cmd)
             # Publish the zero velocity command
             rate = rospy.Rate(100)  # 100 Hz
             for _ in range(10):  # Publish for 1 second
                 main.pub.publish(move_cmd)
                 rate.sleep()
+
+            main.arm_ctrl(2, 0)
+
 
                 
 
