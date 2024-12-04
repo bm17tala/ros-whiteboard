@@ -141,6 +141,10 @@ class PaintGUI:
             startingPoint = 0
 
             if i > 0:
+                print(processed_lines[i][0][0])
+                print(processed_lines[i-1][len(processed_lines[i-1])-1][0])
+
+
                 dx = processed_lines[i][0][0] - processed_lines[i-1][len(processed_lines[i-1])-1][0]
                 dy = processed_lines[i][0][1] - processed_lines[i-1][len(processed_lines[i-1])-1][1]
 
