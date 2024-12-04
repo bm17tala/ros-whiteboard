@@ -170,10 +170,9 @@ class PaintGUI:
 
             main.pub.publish(move_cmd)
 
-            sleep(distance / 100)
+            rospy.sleep(distance / 100)
 
             main.arm_ctrl(3,0)
-            sleep(3)
 
 
             for j in range(startingPoint, len(processed_lines[i])):
@@ -206,13 +205,12 @@ class PaintGUI:
 
                 main.pub.publish(move_cmd)
 
-                sleep(distance / 100)
+                rospy.sleep(distance / 100)
 
             move_cmd.linear.x = 0
             move_cmd.linear.y = 0
             move_cmd.angular.z = 0
             main.pub.publish(move_cmd)
-            sleep(3)
             main.arm_ctrl(2, 0)
 
             #main.pub.publish(move_cmd)
