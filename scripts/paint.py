@@ -142,7 +142,7 @@ class PaintGUI:
             startingPoint = 0
 
             if i > 0:
-                main.arm_ctrl(2, 0)
+                #main.arm_ctrl(2, 0)
                 print(processed_lines[i][0][0])
                 print(processed_lines[i-1][len(processed_lines[i-1])-1][0])
 
@@ -165,7 +165,7 @@ class PaintGUI:
 
                 sleep(distance / 100)
 
-                main.arm_ctrl(3,0)
+                #main.arm_ctrl(3,0)
                 startingPoint = 1
 
 
@@ -176,8 +176,8 @@ class PaintGUI:
                 #    dy = processed_lines[i][j][1] - processed_lines[i-1][len(processed_lines[i-1])-1][1]
                 if j == startingPoint or j == len(processed_lines[i]) - 1:
                     #calculate angle to move in
-                    if j == startingPoint:
-                        main.arm_ctrl(3, 0)
+                    #if j == startingPoint:
+                        #main.arm_ctrl(3, 0)
 
                     dx = 0
                     dy = 0
