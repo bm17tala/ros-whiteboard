@@ -166,7 +166,7 @@ class PaintGUI:
             move_cmd.angular.z = 0
             #main.pub.publish(move_cmd)
             # Publish the zero velocity command
-            rate = rospy.Rate(10)  # 10 Hz
+            rate = rospy.Rate(100)  # 100 Hz
             for _ in range(10):  # Publish for 1 second
                 main.pub.publish(move_cmd)
                 rate.sleep()
