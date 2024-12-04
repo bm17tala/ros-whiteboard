@@ -140,6 +140,8 @@ class PaintGUI:
         for i in range(len(processed_lines)):
             main.arm_ctrl(2, 0)
             for j in range(len(processed_lines[i])):
+
+                #calculate angle to move in
                 if j == 0 or j == len(processed_lines[i]) - 1:
                     main.arm_ctrl(3, 0)
                     dx = 0
@@ -148,6 +150,9 @@ class PaintGUI:
                     dx = processed_lines[i][j][0] - processed_lines[i][j-1][0]
                     dy = processed_lines[i][j][1] - processed_lines[i][j-1][1]
 
+                #calculate distance of line
+                distance = math.sqrt( (dx ** 2) + (dy ** 2) )
+
 
                 angle_rad = math.atan2(dy, dx)
 
@@ -155,9 +160,9 @@ class PaintGUI:
                 move_cmd.linear.y = 0.1 * math.sin(angle_rad)  # Forward motion along the angle
                 move_cmd.angular.z = 0
 
-                print("x: ", move_cmd.linear.x, " y: ", move_cmd.linear.y, " dx: ", dx, " dy: ", dy, " angle_rad: ", angle_rad) 
+                print("x: ", move_cmd.linear.x, " y: ", move_cmd.linear.y, " dx: ", dx, " dy: ", dy, " angle_rad: ", angle_rad, " distance: ", distance) 
 
-                main.pub.publish(move_cmd)
+                #main.pub.publish(move_cmd)
 
                 rospy.sleep(0.2)
 
