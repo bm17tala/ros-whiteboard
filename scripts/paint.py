@@ -246,7 +246,7 @@ class PaintGUI:
             # Publish the zero velocity command
             rate = rospy.Rate(100)  # 100 Hz
 
-            for _ in range(10):  # Publish for 1 second
+            for _ in range(20):  # Publish for 1 second
                #main.pub.publish(move_cmd)
                rate.sleep()
             
