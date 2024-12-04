@@ -146,7 +146,9 @@ class PaintGUI:
                     dy = processed_lines[i][j][1] - processed_lines[i-1][len(processed_lines[i-1])-1][1]
                 elif j == 0 or j == len(processed_lines[i]) - 1:
                     #calculate angle to move in
-                    main.arm_ctrl(3, 0)
+                    if j == 0:
+                        main.arm_ctrl(3, 0)
+                    
                     dx = 0
                     dy = 0
                 else:
