@@ -217,15 +217,15 @@ class PaintGUI:
 
                 rospy.sleep(distance / 100)
 
-                move_cmd.linear.x = 0
-                move_cmd.linear.y = 0
-                move_cmd.angular.z = 0
+                # move_cmd.linear.x = 0
+                # move_cmd.linear.y = 0
+                # move_cmd.angular.z = 0
 
-                # Publish the zero velocity command
-                rate = rospy.Rate(100)  # 100 Hz
-                for _ in range(10):  # Publish for 1 second
-                    main.pub.publish(move_cmd)
-                    rate.sleep()
+                # # Publish the zero velocity command
+                # rate = rospy.Rate(100)  # 100 Hz
+                # for _ in range(10):  # Publish for 1 second
+                #     main.pub.publish(move_cmd)
+                #     rate.sleep()
 
             move_cmd.linear.x = 0
             move_cmd.linear.y = 0
