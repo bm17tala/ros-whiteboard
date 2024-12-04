@@ -142,6 +142,7 @@ class PaintGUI:
             startingPoint = 0
 
             if i > 0:
+                main.arm_ctrl(2, 0)
                 print(processed_lines[i][0][0])
                 print(processed_lines[i-1][len(processed_lines[i-1])-1][0])
 
@@ -211,7 +212,7 @@ class PaintGUI:
                 main.pub.publish(move_cmd)
                 rate.sleep()
 
-            main.arm_ctrl(2, 0)
+            #main.arm_ctrl(2, 0)
 
 
                 
