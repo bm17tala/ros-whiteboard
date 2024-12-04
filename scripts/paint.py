@@ -139,6 +139,7 @@ class PaintGUI:
         move_cmd = main.Twist()
         for i in range(len(processed_lines)):
             main.arm_ctrl(2, 0)
+            rospy.sleep(2)
 
             if i > 0:
                 dx = processed_lines[i][j][0] - processed_lines[i-1][len(processed_lines[i-1])-1][0]
@@ -160,6 +161,8 @@ class PaintGUI:
                 rospy.sleep(distance / 100)
 
                 main.arm_ctrl(3,0)
+                rospy.sleep(2)
+
 
             for j in range(1, len(processed_lines[i])):
 
@@ -169,6 +172,8 @@ class PaintGUI:
                 if j == len(processed_lines[i]) - 1:
                     #calculate angle to move in
                     main.arm_ctrl(3, 0)
+                    rospy.sleep(2)
+
                     dx = 0
                     dy = 0
                 else:
