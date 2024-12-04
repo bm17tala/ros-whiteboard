@@ -104,7 +104,7 @@ class PaintGUI:
 
         for i in range(0, len(lines)):
             processed_lines.append([])
-            for j in range(0, len(lines[i]), 10):
+            for j in range(0, len(lines[i]), 3):
                 processed_lines[i].append( lines[i][j] )
 
 
