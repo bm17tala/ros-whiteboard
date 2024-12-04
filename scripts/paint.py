@@ -207,7 +207,7 @@ class PaintGUI:
 
                 angle_rad = math.atan2(dy, dx)
 
-                move_cmd.linear.x = 0.1 * math.cos(angle_rad)  # Forward motion along the angle
+                move_cmd.linear.x = 0.25 * math.cos(angle_rad)  # Forward motion along the angle
                 move_cmd.linear.y = 0.1 * math.sin(angle_rad)  # Forward motion along the angle
                 move_cmd.angular.z = 0
 
@@ -215,7 +215,7 @@ class PaintGUI:
 
                 main.pub.publish(move_cmd)
 
-                rospy.sleep(distance / 50)
+                rospy.sleep(distance / 100)
 
                 # move_cmd.linear.x = 0
                 # move_cmd.linear.y = 0
