@@ -142,7 +142,6 @@ class PaintGUI:
             for j in range(len(processed_lines[i])):
 
                 if j == 0 and i > 0:
-                    main.arm_ctrl(2, 0)
                     dx = processed_lines[i][j][0] - processed_lines[i-1][len(processed_lines[i-1])-1][0]
                     dy = processed_lines[i][j][1] - processed_lines[i-1][len(processed_lines[i-1])-1][1]
                 elif j == 0 or j == len(processed_lines[i]) - 1:
