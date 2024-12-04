@@ -208,7 +208,7 @@ class PaintGUI:
                 angle_rad = math.atan2(dy, dx)
 
                 move_cmd.linear.x = 0.025 * math.cos(angle_rad)  # Forward motion along the angle
-                move_cmd.linear.y = 0.025 * math.sin(angle_rad)  # Forward motion along the angle
+                move_cmd.linear.y = 0.050 * math.sin(angle_rad)  # Forward motion along the angle
                 move_cmd.angular.z = 0
 
                 print("x: ", move_cmd.linear.x, " y: ", move_cmd.linear.y, " dx: ", dx, " dy: ", dy, " angle_rad: ", angle_rad, " distance: ", distance) 
