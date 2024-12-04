@@ -216,7 +216,7 @@ class PaintGUI:
 
                 main.pub.publish(move_cmd)
 
-                if distVar > 0: distVar -= 4
+                if distVar > 0: distVar -= 2
                 if distVar < 1: distVar = 1
                 rospy.sleep(distance / distVar)
 
