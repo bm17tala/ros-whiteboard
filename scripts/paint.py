@@ -139,6 +139,7 @@ class PaintGUI:
 
         move_cmd = main.Twist()
         main.arm_ctrl(2, 0)
+        lineRate = rospy.rate(distance)
         for i in range(0, len(processed_lines)):
             startingPoint = 1
 
@@ -170,7 +171,8 @@ class PaintGUI:
 
             main.pub.publish(move_cmd)
 
-            rospy.sleep(distance / 100)
+            #rospy.sleep(distance / 100)
+            lineRate.sleep()
 
             move_cmd.linear.x = 0
             move_cmd.linear.y = 0
@@ -215,7 +217,9 @@ class PaintGUI:
 
                 main.pub.publish(move_cmd)
 
-                rospy.sleep(distance / 50)
+                #rospy.sleep(distance / 50)
+                lineRate.sleep()
+
 
                 # move_cmd.linear.x = 0
                 # move_cmd.linear.y = 0
