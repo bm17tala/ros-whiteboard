@@ -42,8 +42,8 @@ class PaintGUI:
         #yCoords.append(self.c.winfo_pointery()-100)
         canvas_xOrigin = int(canvas_width / 2)
         canvas_yOrigin = int(canvas_height / 2)
-        lines[self.current_line].append( (self.c.winfo_pointerx() - self.c.winfo_rootx(), 
-                                        self.c.winfo_pointery() - self.c.winfo_rooty()))
+        lines[self.current_line].append( (self.c.winfo_pointerx() - self.c.winfo_rootx() - canvas_xOrigin, 
+                                        self.c.winfo_pointery() - self.c.winfo_rooty() - canvas_yOrigin))
         #print("x: ", xCoords[len(xCoords)-1], " y: ", yCoords[len(yCoords)-1])
 
 
