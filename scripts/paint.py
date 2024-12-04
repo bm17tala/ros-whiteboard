@@ -223,7 +223,7 @@ class PaintGUI:
 
                 main.pub.publish(move_cmd)
 
-                rospy.sleep(distance / 100)
+                rospy.sleep(distance / 150)
                 #lineRate.sleep()
 
 
