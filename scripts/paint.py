@@ -138,37 +138,40 @@ class PaintGUI:
         directed_graph_img.save("directed_graph_img.png")
 
         move_cmd = main.Twist()
+        main.arm_ctrl(2, 0)
         for i in range(len(processed_lines)):
-            startingPoint = 0
+            startingPoint = 1
 
-            if i > 0:
-                main.arm_ctrl(2, 0)
-                sleep(3)
-                print(processed_lines[i][0][0])
-                print(processed_lines[i-1][len(processed_lines[i-1])-1][0])
+            #print(processed_lines[i][0][0])
+            #if i == 0:
+            #    print(canvas_xOrigin)
+            #else:
+            #    print(processed_lines[i-1][len(processed_lines[i-1])-1][0])
 
-
+            if i < 0:
+                dx = processed_lines[i][0][0] - canvas_xOrigin
+                dy = processed_lines[i][0][1] - canvas_yOrigin
+            else:
                 dx = processed_lines[i][0][0] - processed_lines[i-1][len(processed_lines[i-1])-1][0]
                 dy = processed_lines[i][0][1] - processed_lines[i-1][len(processed_lines[i-1])-1][1]
 
-                #calculate distance of line
-                distance = math.sqrt( (dx ** 2) + (dy ** 2) )
+            #calculate distance of line
+            distance = math.sqrt( (dx ** 2) + (dy ** 2) )
 
 
-                angle_rad = math.atan2(dy, dx)
+            angle_rad = math.atan2(dy, dx)
 
-                move_cmd.linear.x = 0.1 * math.cos(angle_rad)  # Forward motion along the angle
-                move_cmd.linear.y = 0.1 * math.sin(angle_rad)  # Forward motion along the angle
-                move_cmd.angular.z = 0
-                print("x: ", move_cmd.linear.x, " y: ", move_cmd.linear.y, " dx: ", dx, " dy: ", dy, " angle_rad: ", angle_rad, " distance: ", distance) 
+            move_cmd.linear.x = 0.1 * math.cos(angle_rad)  # Forward motion along the angle
+            move_cmd.linear.y = 0.1 * math.sin(angle_rad)  # Forward motion along the angle
+            move_cmd.angular.z = 0
+            print("x: ", move_cmd.linear.x, " y: ", move_cmd.linear.y, " dx: ", dx, " dy: ", dy, " angle_rad: ", angle_rad, " distance: ", distance) 
 
-                main.pub.publish(move_cmd)
+            main.pub.publish(move_cmd)
 
-                sleep(distance / 100)
+            sleep(distance / 100)
 
-                main.arm_ctrl(3,0)
-                sleep(3)
-                startingPoint = 1
+            main.arm_ctrl(3,0)
+            sleep(3)
 
 
             for j in range(startingPoint, len(processed_lines[i])):
@@ -176,16 +179,16 @@ class PaintGUI:
                 #if j == 0 and i > 0:
                 #    dx = processed_lines[i][j][0] - processed_lines[i-1][len(processed_lines[i-1])-1][0]
                 #    dy = processed_lines[i][j][1] - processed_lines[i-1][len(processed_lines[i-1])-1][1]
-                if j == startingPoint or j == len(processed_lines[i]) - 1:
+                #if j == startingPoint or j == len(processed_lines[i]) - 1:
                     #calculate angle to move in
                     #if j == startingPoint:
                         #main.arm_ctrl(3, 0)
 
-                    dx = 0
-                    dy = 0
-                else:
-                    dx = processed_lines[i][j][0] - processed_lines[i][j-1][0]
-                    dy = processed_lines[i][j][1] - processed_lines[i][j-1][1]
+                #    dx = 0
+                #    dy = 0
+                
+                dx = processed_lines[i][j][0] - processed_lines[i][j-1][0]
+                dy = processed_lines[i][j][1] - processed_lines[i][j-1][1]
 
                 #calculate distance of line
                 distance = math.sqrt( (dx ** 2) + (dy ** 2) )
@@ -208,6 +211,7 @@ class PaintGUI:
             move_cmd.angular.z = 0
             main.pub.publish(move_cmd)
             sleep(3)
+            main.arm_ctrl(2, 0)
 
             #main.pub.publish(move_cmd)
             # Publish the zero velocity command
