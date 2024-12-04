@@ -22,8 +22,6 @@ class main:
     current_line = 0
     def __init__(self, master):
         self.master = master
-        self.color_fg = 'Black'
-        self.color_bg = 'white'
         self.old_x = None
         self.old_y = None
         self.pen_width = 5
@@ -36,13 +34,9 @@ class main:
         global height
 
         if self.old_x and self.old_y:
-            self.c.create_line(self.old_x, self.old_y, e.x, e.y, width = self.pen_width, fill = self.color_fg, capstyle='round', smooth = True)
+            self.c.create_line(self.old_x, self.old_y, e.x, e.y, width = self.pen_width, fill = "Black", capstyle='round', smooth = True)
         self.old_x = e.x
         self.old_y = e.y
-        #xCoords.append(self.c.winfo_pointerx())
-        #yCoords.append(self.c.winfo_pointery())
-        #xCoords.append(self.c.winfo_pointerx()-285)
-        #yCoords.append(self.c.winfo_pointery()-100)
         lines[self.current_line].append( (self.c.winfo_pointerx() - self.c.winfo_rootx(), 
                                         self.c.winfo_pointery() - self.c.winfo_rooty()) )
         #print("x: ", xCoords[len(xCoords)-1], " y: ", yCoords[len(yCoords)-1])
@@ -57,28 +51,23 @@ class main:
 
         self.current_line += 1
         lines.append( [] )
-    
-    def changedW(self, width):
-        self.pen_width = width
+
     
     def clearcanvas(self):
         self.c.delete(ALL)
-    
-    def brush(self):
-        self.color_fg = 'Black'
-        self.label.config(text="Brush Active")
-    
-    def eraser(self):
-        self.color_fg = 'White'
-        self.label.config(text="Eraser Active")
+        self.current_line = 0
+        lines.clear()
+        lines.append( [] )
 
-    def save(self):
-        self.c.postscript(file="image.eps")
-        img = Image.open('image.eps')
-        img.save('image.png', 'png')
-        #new_img = img.resize((200,100))
-        #new_img.save('image.png', 'png')
+    def close_arm(self):
+        pass
 
+    def open_arm(self):
+        pass
+
+    def prepare_arm(self):
+        pass
+    
     def send_to_ROS(self):
 
         canvas_xOrigin = int(canvas_width / 2)
@@ -128,32 +117,20 @@ class main:
 
 
     def drawWidgets(self):
-        self.controls = Frame(self.master, padx=5, pady=5)
-        textpw = Label(self.controls, text='Brush Width', font='Courier 12')
-        textpw.grid(row=0, column=0)
-        self.slider = ttk.Scale(self.controls, from_=5, to=100, command=self.changedW, orient='vertical')
-        self.slider.set(self.pen_width)
-        self.slider.grid(row=0, column=1)
-        self.label = Label(self.controls, text='Brush Active', font='Courier 12')
-        self.label.grid(row=2, column=1)
-        eraser = Button(self.controls, text ="Eraser", command=self.eraser)
-        eraser.grid(row=1,column=1)
-        brush = Button(self.controls, text ="Brush", command=self.brush)
-        brush.grid(row=1,column=0)
-        send_to_robot = Button(self.controls, text ="Send to Robot", command=self.send_to_ROS)
-        send_to_robot.grid(row=3,column=0)
+        self.controls = Frame(self.master, padx=5, pady=20, bg="#E2B1B1")
+        prepare = Button(self.controls, text ="Prepare Arm", command=self.prepare_arm, width=20, height=5, bg="#73BFB8")
+        prepare.grid(row=3,column=0)
+        send_to_robot = Button(self.controls, text ="Send to Robot", command=self.send_to_ROS, width=20, height=5, bg="#2364AA")
+        send_to_robot.grid(row=3,column=1)
+        close_arm = Button(self.controls, text ="Close arm", command=self.close_arm, width=20, height=5, bg="#EA7317")
+        close_arm.grid(row=4,column=0)
+        open_arm = Button(self.controls, text ="Open arm", command=self.open_arm, width=20, height=5, bg="#3DA5D9")
+        open_arm.grid(row=4,column=1)
+        clear_canvas = Button(self.controls, text ="Clear Canvas", command=self.clearcanvas, width=20, height=5, bg= "#EC0B43")
+        clear_canvas.grid(row=5,column=0)
         self.controls.pack(side="left")
-        self.c = Canvas(self.master, width=canvas_width, height=canvas_height, bg=self.color_bg)
+        self.c = Canvas(self.master, width=canvas_width, height=canvas_height, bg="White", borderwidth="3", relief="solid")
         self.c.pack(fill=BOTH, expand=True)
-
-        menu = Menu(self.master)
-        self.master.config(menu=menu)
-        optionmenu = Menu(menu)
-        menu.add_cascade(label='Menu', menu=optionmenu)
-        #optionmenu.add_command(label='Brush Color', command=self.change_fg)
-        optionmenu.add_command(label='Clear Canvas', command=self.clearcanvas)
-        optionmenu.add_command(label='Save', command=self.save) 
-        optionmenu.add_command(label='Exit', command=self.master.destroy)
         
 
 win = Tk()
