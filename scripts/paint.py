@@ -108,7 +108,7 @@ class PaintGUI:
 
         for i in range(0, len(lines)):
             processed_lines.append([])
-            for j in range(0, len(lines[i]), 4):
+            for j in range(0, len(lines[i]), 2):
                 processed_lines[i].append( lines[i][j] )
 
 
@@ -170,7 +170,7 @@ class PaintGUI:
 
 
 
-            angle_rad = math.atan2(dx, dy)
+            angle_rad = math.atan2(dy, dx)
 
             move_cmd.linear.x = 0.1 * math.cos(angle_rad)  # Forward motion along the angle
             move_cmd.linear.y = 0.1 * math.sin(angle_rad)  # Forward motion along the angle
@@ -217,7 +217,7 @@ class PaintGUI:
 
 
 
-                angle_rad = math.atan2(dx, dy)
+                angle_rad = math.atan2(dy, dx)
 
                 move_cmd.linear.x = 0.05 * math.cos(angle_rad)  # Forward motion along the angle
                 move_cmd.linear.y = 0.1 * math.sin(angle_rad)  # Forward motion along the angle
