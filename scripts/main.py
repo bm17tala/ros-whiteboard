@@ -249,7 +249,7 @@ def arm_ctrl(id, direction):
             elif id == 3: # position to draw on board (pen down)
                 ros_ctrl.pubArm([], id=joint_num, angle=pos_draw_pen_down[i], run_time=1000)
             
-            sleep(0.25)
+            rospy.sleep(0.25)
 
     else:
         if id == 4: # close the pinchers
@@ -258,7 +258,7 @@ def arm_ctrl(id, direction):
             ros_ctrl.pubArm([], id=6, angle=90, run_time=5000)
 
 
-    sleep(0.05)
+    rospy.sleep(0.05)
 
 
 

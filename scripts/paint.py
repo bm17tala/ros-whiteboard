@@ -7,6 +7,7 @@ import os
 import math
 import main
 import rospy
+from time import sleep
 
 lines = []
 lines.append( [] )
@@ -18,8 +19,8 @@ class PaintGUI:
     current_line = 0
     def __init__(self, master):
         self.master = master
-        self.color_fg = 'Black'
-        self.color_bg = 'white'
+        #self.color_fg = 'Black'
+        #self.color_bg = 'white'
         self.old_x = None
         self.old_y = None
         self.pen_width = 5
@@ -33,12 +34,24 @@ class PaintGUI:
         global height
 
         if self.old_x and self.old_y:
-            self.c.create_line(self.old_x, self.old_y, e.x, e.y, width = self.pen_width, fill = self.color_fg, capstyle='round', smooth = True)
+            self.c.create_line(self.old_x, self.old_y, e.x, e.y, width = self.pen_width, fill = "Black", capstyle='round', smooth = True)
         self.old_x = e.x
         self.old_y = e.y
+<<<<<<< HEAD
         
         lines[self.current_line].append( (self.c.winfo_pointerx() - self.c.winfo_rootx(), 
                                         self.c.winfo_pointery() - self.c.winfo_rooty()) )
+=======
+        #xCoords.append(self.c.winfo_pointerx())
+        #yCoords.append(self.c.winfo_pointery())
+        #xCoords.append(self.c.winfo_pointerx()-285)
+        #yCoords.append(self.c.winfo_pointery()-100)
+        canvas_xOrigin = int(canvas_width / 2)
+        canvas_yOrigin = int(canvas_height / 2)
+        lines[self.current_line].append( (self.c.winfo_pointerx() - self.c.winfo_rootx(), 
+                                        self.c.winfo_pointery() - self.c.winfo_rooty()))
+        #print("x: ", xCoords[len(xCoords)-1], " y: ", yCoords[len(yCoords)-1])
+>>>>>>> 5841f0cc2d81663f52b54348d16dae4c5e83961d
 
 
         width = self.c.winfo_width()
@@ -51,14 +64,33 @@ class PaintGUI:
         self.current_line += 1
         lines.append( [] )
     
+<<<<<<< HEAD
     #Clears the canvas 
+=======
+    #def changedW(self, width):
+    #    self.pen_width = width
+    
+>>>>>>> 5841f0cc2d81663f52b54348d16dae4c5e83961d
     def clearcanvas(self):
         self.c.delete(ALL)
         self.current_line = 0
         lines.clear()
         lines.append( [] )
+<<<<<<< HEAD
     
     #Saves canvas as png
+=======
+
+    
+    #def brush(self):
+    #    self.color_fg = 'Black'
+    #    self.label.config(text="Brush Active")
+    
+    #def eraser(self):
+    #    self.color_fg = 'White'
+    #    self.label.config(text="Eraser Active")
+
+>>>>>>> 5841f0cc2d81663f52b54348d16dae4c5e83961d
     def save(self):
         self.c.postscript(file="image.eps")
         img = Image.open('image.eps')
@@ -79,7 +111,7 @@ class PaintGUI:
     #Processes lines and sends plans to robot for drawing
     def send_to_ROS(self):
         canvas_xOrigin = int(canvas_width / 2)
-        canvas_yOrigin = int(canvas_width / 2)
+        canvas_yOrigin = int(canvas_height / 2)
 
         directed_graph_img = Image.new("RGB", (canvas_width, canvas_height), color=(255, 255, 255))
         pb = ImageDraw.Draw(directed_graph_img)
@@ -88,7 +120,7 @@ class PaintGUI:
 
         for i in range(0, len(lines)):
             processed_lines.append([])
-            for j in range(0, len(lines[i]), 3):
+            for j in range(0, len(lines[i]), 4):
                 processed_lines[i].append( lines[i][j] )
 
 
@@ -124,51 +156,123 @@ class PaintGUI:
         directed_graph_img.save("directed_graph_img.png")
 
         move_cmd = main.Twist()
-        for i in range(len(processed_lines)):
-            main.arm_ctrl(2, 0)
-            for j in range(len(processed_lines[i])):
+        main.arm_ctrl(2, 0)
+        #lineRate = rospy.rate(distance)
+        for i in range(0, len(processed_lines)):
+            startingPoint = 1
 
-                if j == 0 and i > 0:
-                    dx = processed_lines[i][j][0] - processed_lines[i-1][len(processed_lines[i-1])-1][0]
-                    dy = processed_lines[i][j][1] - processed_lines[i-1][len(processed_lines[i-1])-1][1]
-                elif j == 0 or j == len(processed_lines[i]) - 1:
+            #print(processed_lines[i][0][0])
+            #if i == 0:
+            #    print(canvas_xOrigin)
+            #else:
+            #    print(processed_lines[i-1][len(processed_lines[i-1])-1][0])
+
+
+
+            if i < 1:
+                dx = processed_lines[i][0][0] - canvas_xOrigin
+                dy = processed_lines[i][0][1] - canvas_yOrigin
+            else:
+                dx = processed_lines[i][0][0] - processed_lines[i-1][len(processed_lines[i-1])-1][0]
+                dy = processed_lines[i][0][1] - processed_lines[i-1][len(processed_lines[i-1])-1][1]
+
+            #calculate distance of line
+            distance = math.sqrt( (dx ** 2) + (dy ** 2) )
+            lineRate = rospy.Rate(distance * 10000)
+
+
+
+            angle_rad = math.atan2(dy, dx)
+
+            move_cmd.linear.x = 0.1 * math.cos(angle_rad)  # Forward motion along the angle
+            move_cmd.linear.y = 0.1 * math.sin(angle_rad)  # Forward motion along the angle
+            move_cmd.angular.z = 0
+            print("x: ", move_cmd.linear.x, " y: ", move_cmd.linear.y, " dx: ", dx, " dy: ", dy, " angle_rad: ", angle_rad, " distance: ", distance) 
+
+            main.pub.publish(move_cmd)
+
+            rospy.sleep(distance / 100)
+            #lineRate.sleep()
+
+            move_cmd.linear.x = 0
+            move_cmd.linear.y = 0
+            move_cmd.angular.z = 0
+
+            # Publish the zero velocity command
+            rate = rospy.Rate(100)  # 100 Hz
+            for _ in range(10):  # Publish for 1 second
+               main.pub.publish(move_cmd)
+               rate.sleep()
+
+            main.arm_ctrl(3,0)
+
+
+            for j in range(startingPoint, len(processed_lines[i])):
+
+                #if j == 0 and i > 0:
+                #    dx = processed_lines[i][j][0] - processed_lines[i-1][len(processed_lines[i-1])-1][0]
+                #    dy = processed_lines[i][j][1] - processed_lines[i-1][len(processed_lines[i-1])-1][1]
+                #if j == startingPoint or j == len(processed_lines[i]) - 1:
                     #calculate angle to move in
-                    if j == 0:
-                        main.arm_ctrl(3, 0)
-                    
-                    dx = 0
-                    dy = 0
-                else:
-                    dx = processed_lines[i][j][0] - processed_lines[i][j-1][0]
-                    dy = processed_lines[i][j][1] - processed_lines[i][j-1][1]
+                    #if j == startingPoint:
+                        #main.arm_ctrl(3, 0)
+
+                #    dx = 0
+                #    dy = 0
+                
+                dx = processed_lines[i][j][0] - processed_lines[i][j-1][0]
+                dy = processed_lines[i][j][1] - processed_lines[i][j-1][1]
 
                 #calculate distance of line
                 distance = math.sqrt( (dx ** 2) + (dy ** 2) )
+                lineRate = rospy.Rate(distance * 100)
+
 
 
                 angle_rad = math.atan2(dy, dx)
 
-                move_cmd.linear.x = 0.1 * math.cos(angle_rad)  # Forward motion along the angle
+                move_cmd.linear.x = 0.05 * math.cos(angle_rad)  # Forward motion along the angle
                 move_cmd.linear.y = 0.1 * math.sin(angle_rad)  # Forward motion along the angle
                 move_cmd.angular.z = 0
 
                 print("x: ", move_cmd.linear.x, " y: ", move_cmd.linear.y, " dx: ", dx, " dy: ", dy, " angle_rad: ", angle_rad, " distance: ", distance) 
 
-                if j == 0 and i > 0:
-                    main.arm_ctrl(3, 0)
-
                 main.pub.publish(move_cmd)
 
-                rospy.sleep(distance / 100)
+                rospy.sleep(distance / 75)
+                #lineRate.sleep()
+
+
+                # move_cmd.linear.x = 0
+                # move_cmd.linear.y = 0
+                # move_cmd.angular.z = 0
+                # main.pub.publish(move_cmd)
+
+                # # Publish the zero velocity command
+                # rate = rospy.Rate(100)  # 100 Hz
+                # for _ in range(10):  # Publish for 1 second
+                #     main.pub.publish(move_cmd)
+                #     rate.sleep()
+
 
             move_cmd.linear.x = 0
             move_cmd.linear.y = 0
             move_cmd.angular.z = 0
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5841f0cc2d81663f52b54348d16dae4c5e83961d
             # Publish the zero velocity command
             rate = rospy.Rate(100)  # 100 Hz
+
+            sleep(0.5)
+            
             for _ in range(10):  # Publish for 1 second
-                main.pub.publish(move_cmd)
-                rate.sleep()
+               main.pub.publish(move_cmd)
+               rate.sleep()
+
+            main.arm_ctrl(2, 0)
+
 
                 
 
@@ -180,38 +284,28 @@ class PaintGUI:
 
 
     def drawWidgets(self):
-        self.controls = Frame(self.master, padx=5, pady=5)
-        textpw = Label(self.controls, text='Brush Width', font='Courier 12')
-        textpw.grid(row=0, column=0)
-        self.slider = ttk.Scale(self.controls, from_=5, to=100, command=self.changedW, orient='vertical')
-        self.slider.set(self.pen_width)
-        self.slider.grid(row=0, column=1)
-        self.label = Label(self.controls, text='Brush Active', font='Courier 12')
-        self.label.grid(row=2, column=1)
-        # eraser = Button(self.controls, text ="Eraser", command=self.eraser)
-        # eraser.grid(row=1,column=1)
-        brush = Button(self.controls, text ="Brush", command=self.brush)
-        brush.grid(row=1,column=0)
-        send_to_robot = Button(self.controls, text ="Send to Robot", command=self.send_to_ROS)
-        send_to_robot.grid(row=3,column=0)
-        close_arm = Button(self.controls, text ="Close arm", command=self.close_arm)
+        self.controls = Frame(self.master, padx=5, pady=20, bg="#E2B1B1")
+        prepare = Button(self.controls, text ="Prepare Arm", command=self.prepare_arm, width=20, height=5, bg="#73BFB8")
+        prepare.grid(row=3,column=0)
+        send_to_robot = Button(self.controls, text ="Send to Robot", command=self.send_to_ROS, width=20, height=5, bg="#2364AA")
+        send_to_robot.grid(row=3,column=1)
+        close_arm = Button(self.controls, text ="Close arm", command=self.close_arm, width=20, height=5, bg="#EA7317")
         close_arm.grid(row=4,column=0)
-        open_arm = Button(self.controls, text ="Open arm", command=self.open_arm)
+        open_arm = Button(self.controls, text ="Open arm", command=self.open_arm, width=20, height=5, bg="#3DA5D9")
         open_arm.grid(row=4,column=1)
-        prepare = Button(self.controls, text ="Prepare", command=self.prepare_arm)
-        prepare.grid(row=5,column=0)
+        clear_canvas = Button(self.controls, text ="Clear Canvas", command=self.clearcanvas, width=20, height=5, bg= "#EC0B43")
+        clear_canvas.grid(row=5,column=0)
         self.controls.pack(side="left")
-        self.c = Canvas(self.master, width=canvas_width, height=canvas_height, bg=self.color_bg)
+        self.c = Canvas(self.master, width=canvas_width, height=canvas_height, bg="White", borderwidth="3", relief="solid")
         self.c.pack(fill=BOTH, expand=True)
-
-        menu = Menu(self.master)
-        self.master.config(menu=menu)
-        optionmenu = Menu(menu)
-        menu.add_cascade(label='Menu', menu=optionmenu)
-        #optionmenu.add_command(label='Brush Color', command=self.change_fg)
-        optionmenu.add_command(label='Clear Canvas', command=self.clearcanvas)
-        optionmenu.add_command(label='Save', command=self.save) 
-        optionmenu.add_command(label='Exit', command=self.master.destroy)
+        # menu = Menu(self.master)
+        # self.master.config(menu=menu)
+        # optionmenu = Menu(menu)
+        # menu.add_cascade(label='Menu', menu=optionmenu)
+        # #optionmenu.add_command(label='Brush Color', command=self.change_fg)
+        # optionmenu.add_command(label='Clear Canvas', command=self.clearcanvas)
+        # optionmenu.add_command(label='Save', command=self.save) 
+        # optionmenu.add_command(label='Exit', command=self.master.destroy)
 
 
     
