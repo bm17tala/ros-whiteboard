@@ -94,20 +94,6 @@ speedBindings = {
     'c': (1, .9),
 }
 
-# armBindings = {
-#     '1': (1, -1), #left
-#     '2': (1, 1),  #right
-#     '3': (2, 1),  #up
-#     '4': (2, -1), #down
-#     '5': (3, 1),  #up
-#     '6': (3, -1), #down
-#     '7': (4, 1),  #up
-#     '8': (4, -1), #down
-#     '9': (5, -1), #left
-#     '0': (5, 1),  #right
-#     '-': (6, 1),  #close
-#     '=': (6, -1), #open
-# }
 
 armBindings = {
     '1' : (1, 1), # position to grab marker
@@ -147,8 +133,6 @@ def srv_armcallback(srv_arm):
                 print ("arm_joints: ", arm_joints)
         except: 
             rospy.loginfo("arg error")
-            #try again
-            #srv_armcallback(srv_arm)
             
 #The value of the pressed key
 pressedKey = ''

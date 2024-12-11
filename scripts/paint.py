@@ -27,6 +27,7 @@ class PaintGUI:
         self.c.bind('<B1-Motion>', self.paint)
         self.c.bind('<ButtonRelease-1>', self.endLine)
 
+    #Paints line on canvas and sends coordinates to lines array
     def paint(self, e):
         global width
         global height
@@ -35,13 +36,9 @@ class PaintGUI:
             self.c.create_line(self.old_x, self.old_y, e.x, e.y, width = self.pen_width, fill = self.color_fg, capstyle='round', smooth = True)
         self.old_x = e.x
         self.old_y = e.y
-        #xCoords.append(self.c.winfo_pointerx())
-        #yCoords.append(self.c.winfo_pointery())
-        #xCoords.append(self.c.winfo_pointerx()-285)
-        #yCoords.append(self.c.winfo_pointery()-100)
+        
         lines[self.current_line].append( (self.c.winfo_pointerx() - self.c.winfo_rootx(), 
                                         self.c.winfo_pointery() - self.c.winfo_rooty()) )
-        #print("x: ", xCoords[len(xCoords)-1], " y: ", yCoords[len(yCoords)-1])
 
 
         width = self.c.winfo_width()
@@ -54,43 +51,33 @@ class PaintGUI:
         self.current_line += 1
         lines.append( [] )
     
-    def changedW(self, width):
-        self.pen_width = width
-    
+    #Clears the canvas 
     def clearcanvas(self):
         self.c.delete(ALL)
+        self.current_line = 0
+        lines.clear()
+        lines.append( [] )
     
-    def brush(self):
-        self.color_fg = 'Black'
-        self.label.config(text="Brush Active")
-    
-    def eraser(self):
-        self.color_fg = 'White'
-        self.label.config(text="Eraser Active")
-
+    #Saves canvas as png
     def save(self):
         self.c.postscript(file="image.eps")
         img = Image.open('image.eps')
         img.save('image.png', 'png')
-        #new_img = img.resize((200,100))
-        #new_img.save('image.png', 'png')
 
-
+    #Closes arm
     def close_arm(self):
         main.arm_ctrl(4, 0)
 
+    #Opens arm
     def open_arm(self):
         main.arm_ctrl(5, 0)
 
+    #Prepares arm for marker mounting
     def prepare_arm(self):
         main.arm_ctrl(1, 0)
 
-    def stop():
-        pass
-
+    #Processes lines and sends plans to robot for drawing
     def send_to_ROS(self):
-
-
         canvas_xOrigin = int(canvas_width / 2)
         canvas_yOrigin = int(canvas_width / 2)
 
@@ -177,7 +164,6 @@ class PaintGUI:
             move_cmd.linear.x = 0
             move_cmd.linear.y = 0
             move_cmd.angular.z = 0
-            #main.pub.publish(move_cmd)
             # Publish the zero velocity command
             rate = rospy.Rate(100)  # 100 Hz
             for _ in range(10):  # Publish for 1 second
