@@ -19,8 +19,6 @@ class PaintGUI:
     current_line = 0
     def __init__(self, master):
         self.master = master
-        #self.color_fg = 'Black'
-        #self.color_bg = 'white'
         self.old_x = None
         self.old_y = None
         self.pen_width = 5
@@ -36,16 +34,9 @@ class PaintGUI:
             self.c.create_line(self.old_x, self.old_y, e.x, e.y, width = self.pen_width, fill = "Black", capstyle='round', smooth = True)
         self.old_x = e.x
         self.old_y = e.y
-        #xCoords.append(self.c.winfo_pointerx())
-        #yCoords.append(self.c.winfo_pointery())
-        #xCoords.append(self.c.winfo_pointerx()-285)
-        #yCoords.append(self.c.winfo_pointery()-100)
-        canvas_xOrigin = int(canvas_width / 2)
-        canvas_yOrigin = int(canvas_height / 2)
+        # Grab mouse coordinates as a line is being drawn
         lines[self.current_line].append( (self.c.winfo_pointerx() - self.c.winfo_rootx(), 
                                         self.c.winfo_pointery() - self.c.winfo_rooty()))
-        #print("x: ", xCoords[len(xCoords)-1], " y: ", yCoords[len(yCoords)-1])
-
 
         width = self.c.winfo_width()
         height = self.c.winfo_height()
@@ -57,31 +48,18 @@ class PaintGUI:
         self.current_line += 1
         lines.append( [] )
     
-    #def changedW(self, width):
-    #    self.pen_width = width
-    
     def clearcanvas(self):
+        # Clear on screen canvas and the underlying data structure
+        # about the drawing coordinates.
         self.c.delete(ALL)
         self.current_line = 0
         lines.clear()
         lines.append( [] )
 
-    
-    #def brush(self):
-    #    self.color_fg = 'Black'
-    #    self.label.config(text="Brush Active")
-    
-    #def eraser(self):
-    #    self.color_fg = 'White'
-    #    self.label.config(text="Eraser Active")
-
     def save(self):
         self.c.postscript(file="image.eps")
         img = Image.open('image.eps')
         img.save('image.png', 'png')
-        #new_img = img.resize((200,100))
-        #new_img.save('image.png', 'png')
-
 
     def close_arm(self):
         main.arm_ctrl(4, 0)
@@ -96,8 +74,6 @@ class PaintGUI:
         pass
 
     def send_to_ROS(self):
-
-
         canvas_xOrigin = int(canvas_width / 2)
         canvas_yOrigin = int(canvas_height / 2)
 
@@ -106,12 +82,15 @@ class PaintGUI:
 
         processed_lines = []
 
+        # Create more simplistic line segments to make it easier for the robot to draw
+        # AKA create our graph over the drawing
         for i in range(0, len(lines)):
             processed_lines.append([])
             for j in range(0, len(lines[i]), 4):
                 processed_lines[i].append( lines[i][j] )
 
 
+        # Draw this graph onto an image and save it
         for i in range(len(processed_lines)):
             for j in range(len(processed_lines[i])):
                 
@@ -133,142 +112,103 @@ class PaintGUI:
                                                    line_to_draw[2] - line_to_draw[0])))
                     pb.line(line_to_draw, fill=(0, 0, 0), width=5)
 
-
-                # to send these points to the robot... we need two things:
-                # a. get the angle of a given line in radians. that's the direction our robot must move in.
-                #    important: we'll have to be able to tell the robot to do a specific speed in x and y direction,
-                #    we can use some trig to calculate these values for a given angle
-                # b. get the distance the robot must travel in that angle for. we can just use distance formula
-                #    of two points for that. likely use sleep() to specificy the time (distance) to draw a point?
-
         directed_graph_img.save("directed_graph_img.png")
 
+        # to send these points to the robot... we need two things:
+        # a. get the angle of a given line in radians. that's the direction our robot must move in.
+        #    important: we'll have to be able to tell the robot to do a specific speed in x and y direction,
+        #    we can use some trig to calculate these values for a given angle
+        # b. get the distance the robot must travel in that angle for. we can just use distance formula
+        #    of two points for that. likely use sleep() to specificy the time (distance) to draw a point?
+
         move_cmd = main.Twist()
+        # pen up
         main.arm_ctrl(2, 0)
-        #lineRate = rospy.rate(distance)
         for i in range(0, len(processed_lines)):
             startingPoint = 1
 
-            #print(processed_lines[i][0][0])
-            #if i == 0:
-            #    print(canvas_xOrigin)
-            #else:
-            #    print(processed_lines[i-1][len(processed_lines[i-1])-1][0])
-
-
-
+            # calculate x/y pixel distances for first segment when starting a new line
+            
             if i < 1:
+                # if drawing the first line in the drawing
                 dx = processed_lines[i][0][0] - canvas_xOrigin
                 dy = processed_lines[i][0][1] - canvas_yOrigin
             else:
+                # if drawing any other line
                 dx = processed_lines[i][0][0] - processed_lines[i-1][len(processed_lines[i-1])-1][0]
                 dy = processed_lines[i][0][1] - processed_lines[i-1][len(processed_lines[i-1])-1][1]
 
             #calculate distance of line
             distance = math.sqrt( (dx ** 2) + (dy ** 2) )
-            lineRate = rospy.Rate(distance * 10000)
 
-
-
+            # angle of line in radians
             angle_rad = math.atan2(dy, dx)
 
-            move_cmd.linear.x = 0.1 * math.cos(angle_rad)  # Forward motion along the angle
-            move_cmd.linear.y = 0.1 * math.sin(angle_rad)  # Forward motion along the angle
+            # X/Y Magnitudes
+            move_cmd.linear.x = 0.1 * math.cos(angle_rad)  # X Magnitude
+            move_cmd.linear.y = 0.1 * math.sin(angle_rad)  # Y Magnitude
             move_cmd.angular.z = 0
             print("x: ", move_cmd.linear.x, " y: ", move_cmd.linear.y, " dx: ", dx, " dy: ", dy, " angle_rad: ", angle_rad, " distance: ", distance) 
 
             main.pub.publish(move_cmd)
 
+            # move for a certain amount of time according to the distance of this line
             rospy.sleep(distance / 100)
-            #lineRate.sleep()
 
+            # Publish the zero velocity command
             move_cmd.linear.x = 0
             move_cmd.linear.y = 0
             move_cmd.angular.z = 0
-
-            # Publish the zero velocity command
             rate = rospy.Rate(100)  # 100 Hz
             for _ in range(10):  # Publish for 1 second
                main.pub.publish(move_cmd)
                rate.sleep()
 
+            # pen down
             main.arm_ctrl(3,0)
-
 
             for j in range(startingPoint, len(processed_lines[i])):
 
-                #if j == 0 and i > 0:
-                #    dx = processed_lines[i][j][0] - processed_lines[i-1][len(processed_lines[i-1])-1][0]
-                #    dy = processed_lines[i][j][1] - processed_lines[i-1][len(processed_lines[i-1])-1][1]
-                #if j == startingPoint or j == len(processed_lines[i]) - 1:
-                    #calculate angle to move in
-                    #if j == startingPoint:
-                        #main.arm_ctrl(3, 0)
-
-                #    dx = 0
-                #    dy = 0
+                #calculate x/y pixel distances for every other segment in this line
                 
+                # calculate x/y distance between current and last point
                 dx = processed_lines[i][j][0] - processed_lines[i][j-1][0]
                 dy = processed_lines[i][j][1] - processed_lines[i][j-1][1]
 
                 #calculate distance of line
                 distance = math.sqrt( (dx ** 2) + (dy ** 2) )
-                lineRate = rospy.Rate(distance * 100)
 
-
-
+                #angle of line in radians
                 angle_rad = math.atan2(dy, dx)
 
-                move_cmd.linear.x = 0.05 * math.cos(angle_rad)  # Forward motion along the angle
-                move_cmd.linear.y = 0.1 * math.sin(angle_rad)  # Forward motion along the angle
+                # X/Y Magnitudes
+                move_cmd.linear.x = 0.05 * math.cos(angle_rad)  # X Magnitude
+                move_cmd.linear.y = 0.1 * math.sin(angle_rad)  # Y Magnitude
                 move_cmd.angular.z = 0
 
                 print("x: ", move_cmd.linear.x, " y: ", move_cmd.linear.y, " dx: ", dx, " dy: ", dy, " angle_rad: ", angle_rad, " distance: ", distance) 
 
                 main.pub.publish(move_cmd)
 
+                # move for a certain amount of time according to the distance of this line
                 rospy.sleep(distance / 75)
-                #lineRate.sleep()
 
-
-                # move_cmd.linear.x = 0
-                # move_cmd.linear.y = 0
-                # move_cmd.angular.z = 0
-                # main.pub.publish(move_cmd)
-
-                # # Publish the zero velocity command
-                # rate = rospy.Rate(100)  # 100 Hz
-                # for _ in range(10):  # Publish for 1 second
-                #     main.pub.publish(move_cmd)
-                #     rate.sleep()
-
-
+            # Publish the zero velocity command
             move_cmd.linear.x = 0
             move_cmd.linear.y = 0
             move_cmd.angular.z = 0
-
-            # Publish the zero velocity command
             rate = rospy.Rate(100)  # 100 Hz
-
             sleep(0.5)
-            
             for _ in range(10):  # Publish for 1 second
                main.pub.publish(move_cmd)
                rate.sleep()
 
+            # pen up
             main.arm_ctrl(2, 0)
 
 
-                
-
-                
-
-        
-
-
-
-
     def drawWidgets(self):
+        # Draw content onto the GUI
         self.controls = Frame(self.master, padx=5, pady=20, bg="#E2B1B1")
         prepare = Button(self.controls, text ="Prepare Arm", command=self.prepare_arm, width=20, height=5, bg="#73BFB8")
         prepare.grid(row=3,column=0)
@@ -283,18 +223,8 @@ class PaintGUI:
         self.controls.pack(side="left")
         self.c = Canvas(self.master, width=canvas_width, height=canvas_height, bg="White", borderwidth="3", relief="solid")
         self.c.pack(fill=BOTH, expand=True)
-        # menu = Menu(self.master)
-        # self.master.config(menu=menu)
-        # optionmenu = Menu(menu)
-        # menu.add_cascade(label='Menu', menu=optionmenu)
-        # #optionmenu.add_command(label='Brush Color', command=self.change_fg)
-        # optionmenu.add_command(label='Clear Canvas', command=self.clearcanvas)
-        # optionmenu.add_command(label='Save', command=self.save) 
-        # optionmenu.add_command(label='Exit', command=self.master.destroy)
 
-
-    
-
+# Open the Window
 win = Tk()
 win.title("Bot Ross Drawing Utility")
 PaintGUI(win)

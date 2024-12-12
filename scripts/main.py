@@ -94,20 +94,6 @@ speedBindings = {
     'c': (1, .9),
 }
 
-# armBindings = {
-#     '1': (1, -1), #left
-#     '2': (1, 1),  #right
-#     '3': (2, 1),  #up
-#     '4': (2, -1), #down
-#     '5': (3, 1),  #up
-#     '6': (3, -1), #down
-#     '7': (4, 1),  #up
-#     '8': (4, -1), #down
-#     '9': (5, -1), #left
-#     '0': (5, 1),  #right
-#     '-': (6, 1),  #close
-#     '=': (6, -1), #open
-# }
 
 armBindings = {
     '1' : (1, 1), # position to grab marker
@@ -219,40 +205,6 @@ def arm_ctrl(id, direction):
     print("id, direction: ", id, direction)
     print("key released: ", keyReleased)
     idIndex = id - 1
-    # while not keyReleased:
-    #     arm_joints[idIndex] += direction
-    #     if id == 5:
-    #         if arm_joints[idIndex] > 270: arm_joints[idIndex] = 270
-    #         elif arm_joints[idIndex] < 0: arm_joints[idIndex] = 0
-    #     elif id == 6:
-    #         if arm_joints[idIndex] >= 180: arm_joints[idIndex] = 180
-    #         elif arm_joints[idIndex] <= 30: arm_joints[idIndex] = 30
-    #     else:
-    #         if arm_joints[idIndex] > 180: arm_joints[idIndex] = 180
-    #         elif arm_joints[idIndex] < 0: arm_joints[idIndex] = 0
-    #     armjoint.id = id
-    #     armjoint.angle = arm_joints[idIndex]
-    #     # print "id: {},direction: {}".format(id, direction)
-    #     pub_Arm.publish(armjoint)
-    #     print("---------------")
-    #     for i in range(len(arm_joints)):
-    #         print("Joint ", i + 1, " : ", arm_joints[i], " ")
-    #     print("---------------")
-    #     sleep(0.05)
-
-
-    # for i in range(6):
-    #     armjoint.id = i + 1
-
-    #     if id == 1:
-    #         armjoint.angle = pos_grab_marker[i]
-    #     elif id == 2:
-    #         armjoint.angle = pos_draw_hover[i]
-    #     elif id == 3:
-    #         armjoint.angle = pos_draw_pen_down[i]
-        
-    #     sleep(0.25)
-    #     pub_Arm.publish(armjoint)
 
     if id == 1 or id == 2 or id == 3: 
         for i in range(5):
