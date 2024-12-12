@@ -133,8 +133,6 @@ def srv_armcallback(srv_arm):
                 print ("arm_joints: ", arm_joints)
         except: 
             rospy.loginfo("arg error")
-            #try again
-            #srv_armcallback(srv_arm)
             
 #The value of the pressed key
 pressedKey = ''
