@@ -35,21 +35,9 @@ class PaintGUI:
             self.c.create_line(self.old_x, self.old_y, e.x, e.y, width = self.pen_width, fill = "Black", capstyle='round', smooth = True)
         self.old_x = e.x
         self.old_y = e.y
-<<<<<<< HEAD
         
         lines[self.current_line].append( (self.c.winfo_pointerx() - self.c.winfo_rootx(), 
-                                        self.c.winfo_pointery() - self.c.winfo_rooty()) )
-=======
-        #xCoords.append(self.c.winfo_pointerx())
-        #yCoords.append(self.c.winfo_pointery())
-        #xCoords.append(self.c.winfo_pointerx()-285)
-        #yCoords.append(self.c.winfo_pointery()-100)
-        canvas_xOrigin = int(canvas_width / 2)
-        canvas_yOrigin = int(canvas_height / 2)
-        lines[self.current_line].append( (self.c.winfo_pointerx() - self.c.winfo_rootx(), 
                                         self.c.winfo_pointery() - self.c.winfo_rooty()))
-        #print("x: ", xCoords[len(xCoords)-1], " y: ", yCoords[len(yCoords)-1])
->>>>>>> 5841f0cc2d81663f52b54348d16dae4c5e83961d
 
 
         width = self.c.winfo_width()
@@ -62,13 +50,8 @@ class PaintGUI:
         self.current_line += 1
         lines.append( [] )
     
-<<<<<<< HEAD
+
     #Clears the canvas 
-=======
-    #def changedW(self, width):
-    #    self.pen_width = width
-    
->>>>>>> 5841f0cc2d81663f52b54348d16dae4c5e83961d
     def clearcanvas(self):
         # Clear on screen canvas and the underlying data structure
         # about the drawing coordinates.
@@ -76,21 +59,8 @@ class PaintGUI:
         self.current_line = 0
         lines.clear()
         lines.append( [] )
-<<<<<<< HEAD
-    
+
     #Saves canvas as png
-=======
-
-    
-    #def brush(self):
-    #    self.color_fg = 'Black'
-    #    self.label.config(text="Brush Active")
-    
-    #def eraser(self):
-    #    self.color_fg = 'White'
-    #    self.label.config(text="Eraser Active")
-
->>>>>>> 5841f0cc2d81663f52b54348d16dae4c5e83961d
     def save(self):
         self.c.postscript(file="image.eps")
         img = Image.open('image.eps')
@@ -233,10 +203,6 @@ class PaintGUI:
             move_cmd.linear.x = 0
             move_cmd.linear.y = 0
             move_cmd.angular.z = 0
-<<<<<<< HEAD
-=======
-
->>>>>>> 5841f0cc2d81663f52b54348d16dae4c5e83961d
             # Publish the zero velocity command
             rate = rospy.Rate(100)  # 100 Hz
             sleep(0.5)
